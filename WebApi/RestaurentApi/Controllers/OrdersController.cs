@@ -17,9 +17,20 @@ namespace RestaurentApi.Controllers
         private ResContext db = new ResContext();
 
         // GET: api/Orders
-        public IQueryable<Order> GetOrders()
+        public System.Object GetOrders()
         {
-            return db.Orders;
+            var result = (from a in db.Orders
+                          join b in db.CustomerDetails on a.CustomerId equals b.CustomerId
+                          select new
+                          {
+                              a.OrderId,
+                              //a.OrderItems,
+                              CustomaeName = b.Name,
+                              a.OrderNo,
+                              a.GTotal,
+                              a.PmMethod
+                          });
+            return result;
         }
 
         // GET: api/Orders/5
