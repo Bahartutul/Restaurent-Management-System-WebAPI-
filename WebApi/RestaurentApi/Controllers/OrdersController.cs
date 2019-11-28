@@ -37,49 +37,36 @@ namespace RestaurentApi.Controllers
         [ResponseType(typeof(Order))]
         public IHttpActionResult GetOrder(int id)
         {
-            Order order = db.Orders.Find(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
+            var order = (from a in db.Orders
+                         where a.OrderId == id
+                         select new
+                         {
+                             a.OrderId,
+                             a.OrderNo,
+                             a.PmMethod,
+                             a.CustomerId,
+                              a.GTotal,
+                              DeletedItems=""
+                         }).FirstOrDefault();
+            var orders = (from a in db.OrderItems
+                          join b in db.Items on a.ItemId equals b.ItemId
+                          where a.OrderId == id
+                          select new
+                          {
+                              a.OrderId,
+                              a.OrderItemId,
+                              a.ItemId,
+                              b.Name,
+                              b.Price,
+                              a.Quantity,
+                              Total = a.Quantity * b.Price
+                          }).ToList();
 
-            return Ok(order);
+            return Ok(new{ order,orders});
         }
 
-        // PUT: api/Orders/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutOrder(int id, Order order)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != order.OrderId)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(order).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OrderExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
+     
+      
 
         // POST: api/Orders
         [ResponseType(typeof(Order))]
@@ -87,10 +74,29 @@ namespace RestaurentApi.Controllers
         {
             try
             {
+                if (order.OrderId == 0) { 
                 db.Orders.Add(order);
-                foreach(var row in order.OrderItems)
+                }
+                else
                 {
-                    db.OrderItems.Add(row);
+                    db.Entry(order).State = EntityState.Modified;
+                }
+                foreach (var row in order.OrderItems)
+                {
+                    if (row.OrderItemId == 0)
+                    {
+                        db.OrderItems.Add(row);
+                    }
+                    else
+                    {
+                        db.Entry(row).State = EntityState.Modified;
+                    }
+                }
+
+                foreach(var id in order.DeletedItems.Split(',').Where(x => x != ""))
+                {
+                    OrderItem x = db.OrderItems.Find(Convert.ToInt32(id));
+                    db.OrderItems.Remove(x);
                 }
                 db.SaveChanges();
                 return Ok();

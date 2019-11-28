@@ -11,7 +11,8 @@ namespace RestaurentApi.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,7 +26,9 @@ namespace RestaurentApi.Models
         public int CustomerId { get; set; }
         public string PmMethod { get; set; }
         public decimal GTotal { get; set; }
-    
+        [NotMapped]
+        public string DeletedItems { get; set; }
+
         public virtual CustomerDetail CustomerDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
