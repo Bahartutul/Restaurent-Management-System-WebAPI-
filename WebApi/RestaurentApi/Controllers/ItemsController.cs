@@ -74,10 +74,7 @@ namespace RestaurentApi.Controllers
         [ResponseType(typeof(Item))]
         public IHttpActionResult PostItem(Item item)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+           
 
             db.Items.Add(item);
             db.SaveChanges();
