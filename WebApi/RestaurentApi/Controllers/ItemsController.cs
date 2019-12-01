@@ -36,47 +36,53 @@ namespace RestaurentApi.Controllers
         }
 
         // PUT: api/Items/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutItem(int id, Item item)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[ResponseType(typeof(void))]
+        //public IHttpActionResult PutItem(int id, Item item)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            if (id != item.ItemId)
-            {
-                return BadRequest();
-            }
+        //    if (id != item.ItemId)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            db.Entry(item).State = EntityState.Modified;
+        //    db.Entry(item).State = EntityState.Modified;
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        db.SaveChanges();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ItemExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return StatusCode(HttpStatusCode.NoContent);
-        }
+        //    return StatusCode(HttpStatusCode.NoContent);
+        //}
 
         // POST: api/Items
         [ResponseType(typeof(Item))]
         public IHttpActionResult PostItem(Item item)
         {
-           
 
-            db.Items.Add(item);
+            if (item.ItemId > 0)
+            {
+                db.Entry(item).State = EntityState.Modified;
+            }
+            else
+            {
+                db.Items.Add(item);
+            }
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = item.ItemId }, item);
