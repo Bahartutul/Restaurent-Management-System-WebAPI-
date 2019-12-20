@@ -18,7 +18,6 @@ namespace RestaurentApi.Models
         public ResContext()
             : base("name=ResContext")
         {
-            base.Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -30,5 +29,6 @@ namespace RestaurentApi.Models
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
+        public virtual DbSet<RegisterUser> RegisterUsers { get; set; }
     }
 }

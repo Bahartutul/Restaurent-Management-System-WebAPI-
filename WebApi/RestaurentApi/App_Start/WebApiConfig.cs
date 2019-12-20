@@ -11,7 +11,8 @@ namespace RestaurentApi
         public static void Register(HttpConfiguration config)
         {
 
-            config.EnableCors(new EnableCorsAttribute("http://localhost:4200", headers: "*", methods: "*"));
+            //config.EnableCors(new EnableCorsAttribute("http://localhost:4200", headers: "*", methods: "*"));
+            config.EnableCors();
             // Web API configuration and services
 
             // Web API routes

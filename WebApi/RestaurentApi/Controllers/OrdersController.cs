@@ -15,7 +15,7 @@ namespace RestaurentApi.Controllers
     public class OrdersController : ApiController
     {
         private ResContext db = new ResContext();
-
+        [AllowAnonymous]
         // GET: api/Orders
         public System.Object GetOrders()
         {

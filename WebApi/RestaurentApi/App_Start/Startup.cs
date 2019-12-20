@@ -13,6 +13,7 @@ namespace RestaurentApi.App_Start
     {
         public void ConfigureAuth(IAppBuilder app)
         {
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             var OAuthOption = new OAuthAuthorizationServerOptions
             {
                 AllowInsecureHttp = true,
@@ -29,7 +30,7 @@ namespace RestaurentApi.App_Start
         {
             // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=316888
             ConfigureAuth(app);
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            //GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }
 }

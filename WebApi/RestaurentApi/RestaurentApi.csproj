@@ -183,6 +183,9 @@
     <Compile Include="Models\OrderItem.cs">
       <DependentUpon>ResMgt.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RegisterUser.cs">
+      <DependentUpon>ResMgt.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ResMgt.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
